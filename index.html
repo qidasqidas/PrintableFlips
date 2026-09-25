@@ -1,0 +1,664 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Maker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div>
+        <h1>Flashcard Maker</h1>
+        <kbd id="cardCount"  style="background-color: black; color: white; padding: 2px 5px; border-radius: 3px; font-family: monospace;">0 cards</kbd>
+      <span 
+        > | Be Careful While Printing</span>
+    </div>
+
+    <div class="top-actions">
+        <input
+            type="text"
+            id="search"
+            placeholder="Search cards..."
+            autocomplete="off"
+        >
+
+        <button type="button" id="printBtn" class="primary">
+            Print
+        </button>
+
+        <button type="button" id="clearBtn" class="danger">
+            Clear Session
+        </button>
+    </div>
+</header>
+
+
+<main>
+
+    <!-- ================= EDITOR ================= -->
+
+    <section class="panel editor-panel">
+
+        <h2 id="formTitle">Add Flashcard</h2>
+
+        <label for="question">Question</label>
+
+        <div class="editor-toolbar" data-editor="question">
+
+            <button type="button" data-command="bold" title="Bold">
+                <b>B</b>
+            </button>
+
+            <button type="button" data-command="italic" title="Italic">
+                <i>I</i>
+            </button>
+
+            <button type="button" data-command="underline" title="Underline">
+                <u>U</u>
+            </button>
+
+            <button type="button" data-command="superscript" title="Superscript">
+                X<sup>2</sup>
+            </button>
+
+            <button type="button" data-command="subscript" title="Subscript">
+                X<sub>2</sub>
+            </button>
+
+            <span class="toolbar-divider"></span>
+
+            <button type="button" data-command="justifyLeft" title="Align Left">
+                ⬅
+            </button>
+
+            <button type="button" data-command="justifyCenter" title="Align Center">
+                ↔
+            </button>
+
+            <button type="button" data-command="justifyRight" title="Align Right">
+                ➡
+            </button>
+
+            <span class="toolbar-divider"></span>
+
+            <button
+                type="button"
+                data-command="insertUnorderedList"
+                title="Bullet List"
+            >
+                • List
+            </button>
+
+            <button
+                type="button"
+                data-command="insertOrderedList"
+                title="Numbered List"
+            >
+                1. List
+            </button>
+
+            <select class="font-size" title="Font Size">
+                <option value="">Font Size</option>
+                <option value="2">Small</option>
+                <option value="3">Normal</option>
+                <option value="4">Large</option>
+                <option value="5">Very Large</option>
+                <option value="6">Huge</option>
+                <option value="7">Massive</option>
+            </select>
+
+            <button
+                type="button"
+                class="clear-format"
+                title="Clear Formatting"
+            >
+                Clear
+            </button>
+
+        </div>
+
+        <div
+            id="question"
+            class="editor question-editor"
+            contenteditable="true"
+            spellcheck="true"
+            data-placeholder="Enter your question..."
+        ></div>
+
+
+        <label for="answer">Answer</label>
+
+        <div class="editor-toolbar" data-editor="answer">
+
+            <button type="button" data-command="bold" title="Bold">
+                <b>B</b>
+            </button>
+
+            <button type="button" data-command="italic" title="Italic">
+                <i>I</i>
+            </button>
+
+            <button type="button" data-command="underline" title="Underline">
+                <u>U</u>
+            </button>
+
+            <button type="button" data-command="superscript" title="Superscript">
+                X<sup>2</sup>
+            </button>
+
+            <button type="button" data-command="subscript" title="Subscript">
+                X<sub>2</sub>
+            </button>
+
+            <span class="toolbar-divider"></span>
+
+            <button type="button" data-command="justifyLeft" title="Align Left">
+                ⬅
+            </button>
+
+            <button type="button" data-command="justifyCenter" title="Align Center">
+                ↔
+            </button>
+
+            <button type="button" data-command="justifyRight" title="Align Right">
+                ➡
+            </button>
+
+            <span class="toolbar-divider"></span>
+
+            <button
+                type="button"
+                data-command="insertUnorderedList"
+                title="Bullet List"
+            >
+                • List
+            </button>
+
+            <button
+                type="button"
+                data-command="insertOrderedList"
+                title="Numbered List"
+            >
+                1. List
+            </button>
+
+            <select class="font-size" title="Font Size">
+                <option value="">Font Size</option>
+                <option value="2">Small</option>
+                <option value="3">Normal</option>
+                <option value="4">Large</option>
+                <option value="5">Very Large</option>
+                <option value="6">Huge</option>
+                <option value="7">Massive</option>
+            </select>
+
+            <button
+                type="button"
+                class="clear-format"
+                title="Clear Formatting"
+            >
+                Clear
+            </button>
+
+        </div>
+
+
+        <div
+            id="answer"
+            class="editor answer-editor"
+            contenteditable="true"
+            spellcheck="true"
+            data-placeholder="Enter your answer..."
+        ></div>
+
+
+        <div class="form-actions">
+
+            <button
+                type="button"
+                id="saveBtn"
+                class="primary"
+            >
+                Add Card
+            </button>
+
+            <button
+                type="button"
+                id="cancelBtn"
+                class="secondary"
+                hidden
+            >
+                Cancel
+            </button>
+
+        </div>
+
+    </section>
+
+ 
+<!-- ================= BATCH IMPORT ================= -->
+
+<section class="panel import-panel">
+
+    <h2>Batch Import</h2>
+
+    <p class="import-help">
+        Paste cards in the preset format below and they will be
+        automatically added to your card collection.
+    </p>
+
+    <textarea
+        id="batchInput"
+        class="batch-input"
+        placeholder="### CARD 1
+QUESTION:
+What is Ohm's Law?
+
+ANSWER:
+V = IR
+Where V = potential difference, I = current and R = resistance.
+
+### END
+
+### CARD 2
+QUESTION:
+What is the formula for electric power?
+
+ANSWER:
+P = VI
+
+### END"
+    ></textarea>
+
+    <div class="import-actions">
+
+        <button
+            type="button"
+            id="importBtn"
+            class="primary"
+        >
+            Import Cards
+        </button>
+
+        <button
+            type="button"
+            id="clearImportBtn"
+            class="secondary"
+        >
+            Clear
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= BATCH GENERAL FORMATTING ================= -->
+
+<section class="panel batch-format-panel">
+
+    <h2>Batch General Formatting</h2>
+
+    <p class="format-help">
+        Set the default formatting for all cards imported
+        through Batch Import. Manual card formatting is unchanged.
+    </p>
+
+
+    <!-- QUESTION FORMAT -->
+
+    <h3>Question Format</h3>
+
+    <div
+        class="batch-format-toolbar"
+        data-batch-format="question"
+    >
+
+        <button
+            type="button"
+            data-format-command="bold"
+            title="Bold"
+        >
+            <b>B</b>
+        </button>
+
+        <button
+            type="button"
+            data-format-command="italic"
+            title="Italic"
+        >
+            <i>I</i>
+        </button>
+
+        <button
+            type="button"
+            data-format-command="underline"
+            title="Underline"
+        >
+            <u>U</u>
+        </button>
+
+        <button
+            type="button"
+            data-format-command="superscript"
+            title="Superscript"
+        >
+            X<sup>2</sup>
+        </button>
+
+        <button
+            type="button"
+            data-format-command="subscript"
+            title="Subscript"
+        >
+            X<sub>2</sub>
+        </button>
+
+        <span class="toolbar-divider"></span>
+
+        <button
+            type="button"
+            data-format-command="align-left"
+            title="Align Left"
+        >
+            ⬅
+        </button>
+
+        <button
+            type="button"
+            data-format-command="align-center"
+            title="Align Center"
+        >
+            ↔
+        </button>
+
+        <button
+            type="button"
+            data-format-command="align-right"
+            title="Align Right"
+        >
+            ➡
+        </button>
+
+        <span class="toolbar-divider"></span>
+
+        <select
+            class="batch-font-size"
+            title="Font Size"
+        >
+            <option value="">Font Size</option>
+            <option value="14px">Small</option>
+            <option value="17px">Normal</option>
+            <option value="22px">Large</option>
+            <option value="28px">Very Large</option>
+            <option value="32px">Huge</option>
+            <option value="36px">Extra Huge</option>
+            <option value="40px">Massive</option>
+        </select>
+
+        <button
+            type="button"
+            data-format-command="clear"
+            class="batch-clear-format"
+        >
+            Clear
+        </button>
+
+    </div>
+
+
+    <div
+        id="batchQuestionPreview"
+        class="batch-format-preview batch-question-preview"
+    >
+        Question Preview
+    </div>
+
+
+    <!-- ANSWER FORMAT -->
+
+    <h3>Answer Format</h3>
+
+    <div
+        class="batch-format-toolbar"
+        data-batch-format="answer"
+    >
+
+        <button
+            type="button"
+            data-format-command="bold"
+            title="Bold"
+        >
+            <b>B</b>
+        </button>
+
+        <button
+            type="button"
+            data-format-command="italic"
+            title="Italic"
+        >
+            <i>I</i>
+        </button>
+
+        <button
+            type="button"
+            data-format-command="underline"
+            title="Underline"
+        >
+            <u>U</u>
+        </button>
+
+        <button
+            type="button"
+            data-format-command="superscript"
+            title="Superscript"
+        >
+            X<sup>2</sup>
+        </button>
+
+        <button
+            type="button"
+            data-format-command="subscript"
+            title="Subscript"
+        >
+            X<sub>2</sub>
+        </button>
+
+        <span class="toolbar-divider"></span>
+
+        <button
+            type="button"
+            data-format-command="align-left"
+            title="Align Left"
+        >
+            ⬅
+        </button>
+
+        <button
+            type="button"
+            data-format-command="align-center"
+            title="Align Center"
+        >
+            ↔
+        </button>
+
+        <button
+            type="button"
+            data-format-command="align-right"
+            title="Align Right"
+        >
+            ➡
+        </button>
+
+        <span class="toolbar-divider"></span>
+
+        <select
+            class="batch-font-size"
+            title="Font Size"
+        >
+            <option value="">Font Size</option>
+            <option value="14px">Small</option>
+            <option value="17px">Normal</option>
+            <option value="22px">Large</option>
+            <option value="28px">Very Large</option>
+            <option value="32px">Huge</option>
+            <option value="36px">Extra Huge</option>
+            <option value="40px">Massive</option>
+        </select>
+
+        <button
+            type="button"
+            data-format-command="clear"
+            class="batch-clear-format"
+        >
+            Clear
+        </button>
+
+    </div>
+
+
+    <div
+        id="batchAnswerPreview"
+        class="batch-format-preview batch-answer-preview"
+    >
+        Answer Preview
+    </div>
+
+</section>
+
+    <!-- ================= PRINT SETTINGS ================= -->
+
+    <section class="panel">
+
+        <h2>Print Settings</h2>
+
+        <div class="settings-grid">
+
+            <div>
+                <label for="columns">Columns</label>
+
+                <select id="columns">
+                    <option value="2">2</option>
+                    <option value="3" selected>3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+
+
+            <div>
+                <label for="rows">Rows</label>
+
+                <select id="rows">
+                    <option value="2">2</option>
+                    <option value="3" selected>3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+
+
+            <div>
+                <label for="orientation">Orientation</label>
+
+                <select id="orientation">
+                    <option value="portrait" selected>
+                        Portrait
+                    </option>
+
+                    <option value="landscape">
+                        Landscape
+                    </option>
+                </select>
+            </div>
+
+
+            <div>
+                <label for="flip">Duplex Flip</label>
+
+                <select id="flip">
+                    <option value="long" selected>
+                        Long Edge
+                    </option>
+
+                    <option value="short">
+                        Short Edge
+                    </option>
+                </select>
+            </div>
+
+
+            <div>
+                <label for="horizontal">
+                    Horizontal Adjustment:
+                    <span id="horizontalValue">0 mm</span>
+                </label>
+
+                <input
+                    type="range"
+                    id="horizontal"
+                    min="-10"
+                    max="10"
+                    value="0"
+                    step="0.5"
+                >
+            </div>
+
+
+            <div>
+                <label for="vertical">
+                    Vertical Adjustment:
+                    <span id="verticalValue">0 mm</span>
+                </label>
+
+                <input
+                    type="range"
+                    id="vertical"
+                    min="-10"
+                    max="10"
+                    value="0"
+                    step="0.5"
+                >
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CARDS ================= -->
+
+    <section class="panel cards-panel">
+
+        <div class="cards-header">
+            <h2>Your Cards</h2>
+        </div>
+
+        <div
+            id="cardsContainer"
+            class="cards-container"
+        ></div>
+
+        <div
+            id="emptyState"
+            class="empty-state"
+        >
+            No flashcards yet.
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- PRINT AREA -->
+
+<div id="printArea"></div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
